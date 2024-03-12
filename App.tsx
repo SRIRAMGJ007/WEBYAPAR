@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import CentralNav from './Src/Navigation/CentralNav'
 
 const App = () => {
   return (
     <View style={{flex:1,backgroundColor:'white'}} >
-      <Text style={{color:'black',alignSelf:'center',fontFamily:"Poppins-Bold"}} >App</Text>
+      <CentralNav/>
     </View>
   )
 }
