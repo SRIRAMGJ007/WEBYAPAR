@@ -3,7 +3,7 @@ import React from 'react'
 
 const Upload = () => {
   return (
-    <View>
+    <View style={{backgroundColor:'white',flex:1}}>
       <Text>Upload</Text>
     </View>
   )

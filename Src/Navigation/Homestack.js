@@ -8,7 +8,7 @@ const Tab = createBottomTabNavigator();
 
 function HomeStack() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator  screenOptions={{headerShown: false}} >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Upload" component={Upload} />
       <Tab.Screen name="Fetch" component={Fetch} />
