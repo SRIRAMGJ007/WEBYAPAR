@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import {
-  KeyboardAvoidingView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -16,17 +14,27 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import TextinpComponent from '../Components/TextinpComponent';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { User_Login } from '../API_Handler/User_api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const SignIn = () => {
   const navigation = useNavigation();
   const [isvisible, setisvisible] = useState(true);
   const [email, setemail] = useState('');
-  const [name, setname] = useState('');
   const [password, setpassword] = useState('');
 
-  const HandleSignup = () => {
-    console.log(email, password, name);
+  const HandleSignIn = async () => {
+    const response = await User_Login(email, password);
+    if (response.success) {
+      await AsyncStorage.setItem('AccessToken', response.token);
+      console.log(response);
+      // navigation.navigate('Home');
+    } else {
+      Alert.alert('Error', response.message);
+    }
   };
+  
 
   return (
     <LinearGradient
@@ -96,14 +104,14 @@ const SignIn = () => {
             onchange={(txt) => {
               setpassword(txt);
             }}
-            keytype={'numeric'}
+            // keytype={'numeric'}
             iconvisible={true}
             Securetext={isvisible}
             eyepress={() => {
               setisvisible(!isvisible);
             }}
           />
-          <TouchableOpacity style={{ marginTop: moderateVerticalScale(100) }} onPress={HandleSignup}>
+          <TouchableOpacity style={{ marginTop: moderateVerticalScale(100) }} onPress={HandleSignIn}>
             <LinearGradient
               colors={['rgba(165,101,255,1)', 'rgba(194,125,254,1)']}
               start={{ x: 0, y: 0 }}

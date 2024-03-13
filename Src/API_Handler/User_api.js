@@ -1,13 +1,13 @@
 import ApiManager from './Api_Manager';
 
-export const User_Login = async (email, name, password) => {
+export const User_Login = async (email, password) => {
   try {
     const response = await ApiManager('/auth/user/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({email, name, password}),
+      body: JSON.stringify({ email, password }),
     });
     const data = await response.json();
     if (!response.ok) {
@@ -26,7 +26,7 @@ export const User_Register = async (email, name, password) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({email, name, password}),
+      body: JSON.stringify({ email, name, password }),
     });
     const data = await response.json();
     if (!response.ok) {
@@ -42,10 +42,10 @@ export const Submit_Form_Data = async (latitude, longitude, image) => {
   try {
     const token = ''; 
     const formData = new FormData();
-    formData.append('latitude', latitude);
-    formData.append('longitude', longitude);
+    formData.append('latitude', latitude.toString());
+    formData.append('longitude', longitude.toString());
     formData.append('image', {
-      uri: image,
+      uri: image.uri,
       type: 'image/jpeg',
       name: 'photo.jpg',
     });
@@ -86,4 +86,3 @@ export const Retrieve_Data = async () => {
     throw new Error(error.message);
   }
 };
-

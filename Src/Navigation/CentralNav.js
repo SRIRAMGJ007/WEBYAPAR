@@ -21,8 +21,8 @@ function CentralNav() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="HomeStack" component={HomeStack} />
         <Stack.Screen name="AuthStack" component={AuthStack} />
+        <Stack.Screen name="HomeStack" component={HomeStack} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,7 +1,7 @@
 import axios from "react-native-axios";
 
 const ApiManager = axios.create({
-    baseURL:`${process.env.API_KEY}`,
+    baseURL:'https://test.webyaparsolutions.com/',
     respomseType : 'json',
     withCredentials:true,
 })
