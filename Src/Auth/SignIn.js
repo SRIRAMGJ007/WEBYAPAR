@@ -16,7 +16,7 @@ import TextinpComponent from '../Components/TextinpComponent';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { User_Login } from '../API_Handler/User_api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { StackActions } from '@react-navigation/native';
 
 const SignIn = () => {
   const navigation = useNavigation();
@@ -29,7 +29,7 @@ const SignIn = () => {
     if (response.success) {
       await AsyncStorage.setItem('AccessToken', response.token);
       console.log(response);
-      // navigation.navigate('Home');
+      navigation.dispatch(StackActions.replace('HomeStack'));
     } else {
       Alert.alert('Error', response.message);
     }

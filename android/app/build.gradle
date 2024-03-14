@@ -112,6 +112,8 @@ dependencies {
     implementation project(':react-native-vector-icons')
     // added
 
+    
+
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {

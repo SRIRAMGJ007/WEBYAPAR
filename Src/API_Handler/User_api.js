@@ -1,88 +1,54 @@
 import ApiManager from './Api_Manager';
 
-export const User_Login = async (email, password) => {
-  try {
-    const response = await ApiManager('/auth/user/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message);
-    }
-    return data;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+export const User_Login = (email, password) => {
+  return ApiManager('/auth/user/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, password }),
+  });
 };
 
-export const User_Register = async (email, name, password) => {
-  try {
-    const response = await ApiManager('/auth/user/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, name, password }),
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message);
-    }
-    return data;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+export const User_Register = (email, name, password) => {
+  return ApiManager('/auth/user/signup', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, name, password }),
+  });
 };
 
-export const Submit_Form_Data = async (latitude, longitude, image) => {
+export const Submit_Form_Data = async (formData, token) => {
   try {
-    const token = ''; 
-    const formData = new FormData();
-    formData.append('latitude', latitude.toString());
-    formData.append('longitude', longitude.toString());
-    formData.append('image', {
-      uri: image.uri,
-      type: 'image/jpeg',
-      name: 'photo.jpg',
-    });
-
-    const response = await ApiManager('/form', {
+    const response = await fetch('/form', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'multipart/form-data', 
       },
       body: formData,
     });
+
     const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message);
+
+    if (response.ok) {
+      return data; 
+    } else {
+      throw new Error(data.message || 'Failed to submit form'); 
     }
-    return data;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error(error.message || 'An error occurred while submitting the form');
   }
 };
 
-export const Retrieve_Data = async () => {
-  try {
-    const token = ''; 
-    const response = await ApiManager('/data', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message);
-    }
-    return data;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+
+export const Retrieve_Data = (token) => {
+  return ApiManager('/data', {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
