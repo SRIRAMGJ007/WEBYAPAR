@@ -3,7 +3,7 @@ import React from 'react'
 
 const Fetch = () => {
   return (
-    <View>
+    <View style={{backgroundColor:'white',flex:1}}>
       <Text>Fetch</Text>
     </View>
   )

@@ -6,7 +6,7 @@ export const User_Login = (email, password) => {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({email, password}),
   });
 };
 
@@ -16,17 +16,32 @@ export const User_Register = (email, name, password) => {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email, name, password }),
+    body: JSON.stringify({email, name, password}),
   });
 };
 
-export const Submit_Form_Data = async (formData, token) => {
+export const Submit_Form_Data = async (
+  latitude,
+  longitude,
+  imageUrl,
+  token,
+) => {
   try {
+    const formData = new FormData();
+    formData.append('latitude', latitude.toString());
+    formData.append('longitude', longitude.toString());
+    formData.append('file', {
+      uri: imageUrl,
+      filename :'image',
+      type: 'image/jpeg',
+      name: 'image.jpg',
+    });
+
     const response = await fetch('/form', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data', 
+        'Content-Type': 'multipart/form-data',
       },
       body: formData,
     });
@@ -34,17 +49,18 @@ export const Submit_Form_Data = async (formData, token) => {
     const data = await response.json();
 
     if (response.ok) {
-      return data; 
+      return data;
     } else {
-      throw new Error(data.message || 'Failed to submit form'); 
+      throw new Error(data.message || 'Failed to submit form');
     }
   } catch (error) {
-    throw new Error(error.message || 'An error occurred while submitting the form');
+    throw new Error(
+      error.message || 'An error occurred while submitting the form',
+    );
   }
 };
 
-
-export const Retrieve_Data = (token) => {
+export const Retrieve_Data = token => {
   return ApiManager('/data', {
     method: 'GET',
     headers: {

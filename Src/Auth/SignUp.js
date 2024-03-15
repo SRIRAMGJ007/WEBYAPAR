@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Alert
 } from 'react-native';
 import {
   moderateScale,
@@ -16,6 +17,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
 import TextinpComponent from '../Components/TextinpComponent';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { User_Register } from '../API_Handler/User_api';
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -23,9 +25,27 @@ const SignUp = () => {
   const [email, setemail] = useState('');
   const [name, setname] = useState('');
   const [password, setpassword] = useState('');
-  const HandleSignIn =()=>{
-    console.log(email,password,name);
-  }
+
+  const handleRegister = async () => {
+    try {
+      const response = await User_Register(email, name, password);
+      if (response.success) {
+        // Registration successful
+        Alert.alert('Success', response.message);
+        console.log("registerd sucessfully");
+        // Navigate to another screen or do something else upon successful registration
+      } else {
+        // Registration failed
+        Alert.alert('Error', response.message);
+      }
+    } catch (error) {
+      console.error('Error occurred during registration:', error);
+      Alert.alert('Error', 'An unexpected error occurred.');
+    }
+  };
+  
+  
+
   return (
     <LinearGradient
       colors={['rgba(165,101,255,1)', 'rgba(194,125,254,1)']}
@@ -93,14 +113,14 @@ const SignUp = () => {
             onchange={txt => {
               setpassword(txt);
             }}
-            keytype={'numeric'}
+            // keytype={'numeric'}
             iconvisible={true}
             Securetext={isvisible}
             eyepress={() => {
               setisvisible(!isvisible);
             }}
           />
-          <TouchableOpacity style={{marginTop:moderateVerticalScale(100) }} onPress={HandleSignIn} >
+          <TouchableOpacity style={{marginTop:moderateVerticalScale(100) }} onPress={handleRegister} >
             <LinearGradient
               colors={['rgba(165,101,255,1)', 'rgba(194,125,254,1)']}
               start={{x: 0, y: 0}}

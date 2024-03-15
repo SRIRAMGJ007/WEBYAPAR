@@ -12,7 +12,6 @@ const Upload = () => {
   const [token, setToken] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-  const [imgUri, setImgUri] = useState(null);
 
   useEffect(() => {
     const retrieveToken = async () => {
@@ -38,42 +37,27 @@ const Upload = () => {
         console.log(response);
         const selectedImageUri = response.assets[0].uri;
         setImguri(selectedImageUri);
-        setImgUri(selectedImageUri);
+        console.log(selectedImageUri);
+        getLocation();
       }
     });
   };
 
-  const handleImage = () => {
+  const getLocation = () => {
     Geolocation.getCurrentPosition(data => {
-      const latitude = data.coords.latitude;
-      const longitude = data.coords.longitude;
-      console.log("latitude", latitude);
-      console.log("longitude", longitude);
-      setLatitude(latitude);
-      setLongitude(longitude);
+      setLatitude(data.coords.latitude);
+      setLongitude(data.coords.longitude);
+      console.log("latitude", data.coords.latitude);
+      console.log("longitude", data.coords.longitude);
+      console.log("image", imguri);
     });
   };
 
   const handleSubmit = async () => {
-    handleImage()
-    if (!latitude || !longitude || !imgUri) {
-      Alert.alert('Error', 'Please fill in all the required fields');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('latitude', latitude.toString());
-    formData.append('longitude', longitude.toString());
-    formData.append('image', {
-      
-      uri: imgUri,
-      name: 'photo.jpg',
-      type: 'image/jpeg',
-    });
-
     try {
-      const response = await Submit_Form_Data(formData, token);
-
+      
+      const response = await Submit_Form_Data(latitude, longitude, imguri, token);
+  
       if (response.ok) {
         Alert.alert('Success', 'Image uploaded successfully');
       } else {
@@ -85,6 +69,7 @@ const Upload = () => {
       Alert.alert('Error', 'An error occurred while submitting the form');
     }
   };
+  
 
   return (
     <View style={{ backgroundColor: 'white', flex: 1 }}>
