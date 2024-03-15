@@ -6,7 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Alert
+  Alert,
 } from 'react-native';
 import {
   moderateScale,
@@ -17,7 +17,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
 import TextinpComponent from '../Components/TextinpComponent';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import { User_Register } from '../API_Handler/User_api';
+import {User_Register} from '../API_Handler/User_api';
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -27,24 +27,41 @@ const SignUp = () => {
   const [password, setpassword] = useState('');
 
   const handleRegister = async () => {
-    try {
-      const response = await User_Register(email, name, password);
-      if (response.success) {
-        // Registration successful
-        Alert.alert('Success', response.message);
-        console.log("registerd sucessfully");
-        // Navigate to another screen or do something else upon successful registration
-      } else {
-        // Registration failed
-        Alert.alert('Error', response.message);
-      }
-    } catch (error) {
-      console.error('Error occurred during registration:', error);
-      Alert.alert('Error', 'An unexpected error occurred.');
-    }
+    await fetch('https://test.webyaparsolutions.com//auth/user/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({email, name, password}),
+    })
+      .then(resp => resp.json())
+      .then(response => console.log(response));
+    // console.log(JSON.stringify(email,name,password))
   };
-  
-  
+  //       .then(response => {
+  //         response.json()
+  //       }).then((response) => {
+  //         if (!response.ok) {
+  //           throw new Error('Network response was not ok');
+  //         }
+  //                 })
+  //       .catch(error => {
+  //         throw new Error(error.message);
+  //       });
+  //     if (response.success) {
+  //       // Registration successful
+  //       Alert.alert('Success', response.message);
+  //       console.log('registerd sucessfully');
+  //       // Navigate to another screen or do something else upon successful registration
+  //     } else {
+  //       // Registration failed
+  //       Alert.alert('Error', response.message);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error occurred during registration:', error);
+  //     Alert.alert('Error', 'An unexpected error occurred.');
+  //   }
+  // };
 
   return (
     <LinearGradient
@@ -120,14 +137,29 @@ const SignUp = () => {
               setisvisible(!isvisible);
             }}
           />
-          <TouchableOpacity style={{marginTop:moderateVerticalScale(100) }} onPress={handleRegister} >
+          <TouchableOpacity
+            style={{marginTop: moderateVerticalScale(100)}}
+            onPress={handleRegister}>
             <LinearGradient
               colors={['rgba(165,101,255,1)', 'rgba(194,125,254,1)']}
               start={{x: 0, y: 0}}
               end={{x: 1, y: 0}}
-              style={{height: moderateScale(50), borderRadius:moderateScale(20),alignItems:'center',justifyContent:'center'}}>
-                <Text style={{color:'white',fontSize:scale(15),textAlign:'center',fontFamily:'Poppins-SemiBold'}}>SignUp</Text>
-              </LinearGradient>
+              style={{
+                height: moderateScale(50),
+                borderRadius: moderateScale(20),
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  color: 'white',
+                  fontSize: scale(15),
+                  textAlign: 'center',
+                  fontFamily: 'Poppins-SemiBold',
+                }}>
+                SignUp
+              </Text>
+            </LinearGradient>
           </TouchableOpacity>
         </View>
       </KeyboardAwareScrollView>
@@ -136,5 +168,3 @@ const SignUp = () => {
 };
 
 export default SignUp;
-
-const styles = StyleSheet.create({});
