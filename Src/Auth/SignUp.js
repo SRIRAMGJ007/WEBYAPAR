@@ -35,7 +35,13 @@ const SignUp = () => {
       body: JSON.stringify({email, name, password}),
     })
       .then(resp => resp.json())
-      .then(response => console.log(response));
+      .then((response) => {
+        console.log(response)
+        if (response){
+          navigation.navigate('SignIn');
+        }
+      }
+      );
     // console.log(JSON.stringify(email,name,password))
   };
   //       .then(response => {

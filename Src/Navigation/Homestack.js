@@ -6,11 +6,12 @@ import Profile from '../Screens/Profile';
 import FeatherIcon from 'react-native-vector-icons/Feather'; 
 import Ionicons from 'react-native-vector-icons/Ionicons'; 
 import FontAwesome from 'react-native-vector-icons/FontAwesome'; 
-
+import {ImgProvider} from '../Context/Provider'
 const Tab = createBottomTabNavigator();
 
 function HomeStack() {
   return (
+    <ImgProvider>
     <Tab.Navigator screenOptions={{ headerShown: false,  tabBarActiveTintColor:'#a565ff' }}>
       <Tab.Screen 
         name="Home" 
@@ -37,6 +38,7 @@ function HomeStack() {
           ),
         }} />
     </Tab.Navigator>
+    </ImgProvider>
   );
 }
 
